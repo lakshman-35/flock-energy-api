@@ -1,9 +1,7 @@
 require("dotenv").config();
-const cors = require("cors");
-
-app.use(cors());
 
 const express = require("express");
+const cors = require("cors");
 const swaggerUI = require("swagger-ui-express");
 const swaggerSpec = require("./swagger");
 
@@ -12,13 +10,18 @@ const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
+// Middleware
+app.use(cors());
 app.use(express.json());
 
+// Routes
 app.use("/api/v1/auth", authRoutes);
-
 app.use("/api/v1/meters", meterRoutes);
 
+// Swagger
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+
+// Home Route
 app.get("/", (req, res) => {
     res.send("Flock Energy Assignment API");
 });
